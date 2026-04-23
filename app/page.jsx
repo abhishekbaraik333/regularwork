@@ -591,7 +591,7 @@ export default function Home() {
                     <Image src="/Parcel-status-icon-box_4.png" alt="Parcel Locker" width={40} height={40} className="shrink-0 h-auto" />
                     <span className="text-xs font-black text-inpost-black " aria-hidden="true">→</span>
                     {postingType === "locker-to-home" ? (
-                      <Image src="/Parcel-status-icon.webp" alt="Parcel Locker" width={40} height={40} className="shrink-0 h-auto" />
+                      <Image src="/parcel-status-icon.webp" alt="Parcel Locker" width={40} height={40} className="shrink-0 h-auto" />
 
                     ) : (
                       <Image src="/Parcel-status-icon-box_4.png" alt="Parcel Locker" width={40} height={40} className="shrink-0 h-auto" />
