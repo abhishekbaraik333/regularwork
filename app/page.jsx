@@ -333,7 +333,7 @@ export default function Home() {
                     <div className="flex-1 flex items-center justify-center gap-4 py-2">
                       <Image src="/Parcel-status-icon-box_4.png" alt="Parcel Locker" width={50} height={50} className="shrink-0 h-auto w-[50px]" />
                       <span className="text-inpost-black text-2xl font-light" aria-hidden="true">→</span>
-                      <Image src="/Parcel-status-icon.webp" alt="Parcel Locker" width={50} height={50} className="shrink-0 h-auto w-[50px]" />
+                      <Image src="/parcel-status-icon.webp" alt="Parcel Locker" width={50} height={50} className="shrink-0 h-auto w-[50px]" />
                     </div>
                   </div>
                   <div className="divider h-px bg-gray-300 w-full my-5"></div>
