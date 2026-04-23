@@ -72,7 +72,7 @@ const initialFormData = {
 };
 
 export default function Home() {
-  const [postingType, setPostingType] = useState("locker-to-home");
+  const [postingType, setPostingType] = useState("locker-to-locker");
   const [parcelSize, setParcelSize] = useState("small");
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
