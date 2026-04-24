@@ -242,10 +242,10 @@ export default function Home() {
                 &nbsp;·&nbsp; z etykietą lub bez
               </p>
               <div className="md:hidden mt-5">
-            <button type="button" className="bg-inpost-black text-white px-6 py-4 font-bold text-[15px] hover:bg-black transition-colors">
-              Jak nadać paczkę?
-            </button>
-          </div>
+                <button type="button" className="bg-inpost-black text-white px-6 py-4 font-bold text-[15px] hover:bg-black transition-colors">
+                  Jak nadać paczkę?
+                </button>
+              </div>
             </div>
           </div>
 
@@ -254,18 +254,18 @@ export default function Home() {
 
       {/* ========== TAB BAR ========== */}
       <div className="bg-inpost-yellow w-full md:pt-5">
-        <div className="max-w-[1200px] mx-auto px-4 flex items-center justify-between">
+        <div className="max-w-[1200px] mx-auto px-4 flex items-end justify-between">
           <div className="flex items-end gap-5">
-            <button type="button" className="md:px-10 px-3 py-3 md:py-5 text-[10px] font-black tracking-tight bg-white relative">
+            <button type="button" className="md:px-5 px-3 py-3 md:py-3 text-[10px] md:text-[15px] font-black tracking-tight bg-white relative">
               PRZESYŁKA KRAJOWA
             </button>
-            <button type="button" className="bg-[#FAE6AA] md:px-10 px-3 py-2 md:py-5 text-[10px] md:text-[15px] font-black tracking-tight text-inpost-black flex items-center gap-2 cursor-pointer">
+            <button type="button" className="bg-[#FAE6AA] md:px-5 px-3 py-3 md:py-3 text-[10px] md:text-[15px] font-black tracking-tight text-inpost-black flex items-center gap-2 cursor-pointer">
               WYSYŁAM ZA GRANICĘ
-              <span className="bg-[#E91E63] text-black text-[10px] md:text-[15px] font-black px-1.5 py-0.5 rounded-[2px] mb-0.5">NOWOŚĆ</span>
+              <span className="bg-[#E91E63] text-black text-[10px] md:text-[13px] font-black px-1.5 py-0.5">NOWOŚĆ</span>
             </button>
           </div>
-          <div className="hidden md:block pb-2">
-            <button type="button" className="bg-inpost-black text-white px-6 py-4 font-bold text-[10px] md:text-[15px] hover:bg-black transition-colors">
+          <div className="hidden md:block">
+            <button type="button" className="bg-inpost-black mb-3 text-white px-6 py-4 font-bold text-[10px] md:text-[15px] hover:bg-black transition-colors">
               Jak nadać paczkę?
             </button>
           </div>
@@ -680,7 +680,7 @@ export default function Home() {
             {/* Navigation Links */}
             <ul className="flex flex-wrap gap-x-8 gap-y-3 text-[16px] font-medium">
               <li><button type="button" className="hover:opacity-70 transition-opacity">Regulaminy</button></li>
-              <li><button type="button" className="hover:opacity-70 transition-opacity">Polityka prywatności</button></li>  
+              <li><button type="button" className="hover:opacity-70 transition-opacity">Polityka prywatności</button></li>
               <li><button type="button" className="hover:opacity-70 transition-opacity">Reklamacje</button></li>
               <li><button type="button" className="hover:opacity-70 transition-opacity">Pomoc</button></li>
               <li><button type="button" className="hover:opacity-70 transition-opacity">Kontakt</button></li>
