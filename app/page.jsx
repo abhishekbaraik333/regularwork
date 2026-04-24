@@ -256,16 +256,16 @@ export default function Home() {
       <div className="bg-inpost-yellow w-full md:pt-5">
         <div className="max-w-[1200px] mx-auto px-4 flex items-center justify-between">
           <div className="flex items-end gap-5">
-            <button type="button" className="md:px-10 px-5 py-2 md:py-5 text-[15px] font-black tracking-tight bg-white relative">
+            <button type="button" className="md:px-10 px-3 py-3 md:py-5 text-[10px] font-black tracking-tight bg-white relative">
               PRZESYŁKA KRAJOWA
             </button>
-            <button type="button" className="bg-[#FAE6AA] px-10 py-5 text-[15px] font-black tracking-tight text-inpost-black flex items-center gap-2 cursor-pointer">
+            <button type="button" className="bg-[#FAE6AA] md:px-10 px-3 py-2 md:py-5 text-[10px] md:text-[15px] font-black tracking-tight text-inpost-black flex items-center gap-2 cursor-pointer">
               WYSYŁAM ZA GRANICĘ
-              <span className="bg-[#E91E63] text-black text-[10px] font-black px-1.5 py-0.5 rounded-[2px] mb-0.5">NOWOŚĆ</span>
+              <span className="bg-[#E91E63] text-black text-[10px] md:text-[15px] font-black px-1.5 py-0.5 rounded-[2px] mb-0.5">NOWOŚĆ</span>
             </button>
           </div>
           <div className="hidden md:block pb-2">
-            <button type="button" className="bg-inpost-black text-white px-6 py-4 font-bold text-[15px] hover:bg-black transition-colors">
+            <button type="button" className="bg-inpost-black text-white px-6 py-4 font-bold text-[10px] md:text-[15px] hover:bg-black transition-colors">
               Jak nadać paczkę?
             </button>
           </div>
@@ -287,7 +287,7 @@ export default function Home() {
       {/* ========== MAIN CONTENT ========== */}
       <main className="max-w-[1200px] mx-auto px-4">
         {/* Step Indicator */}
-        <nav className="flex items-center gap-3 py-6 text-[13px] font-bold text-inpost-gray">
+        <nav className="flex items-center gap-1 md:gap-3 py-6 text-[10px] md:text-[13px] font-bold text-inpost-gray">
           <span className="text-inpost-black">1. Szczegóły nadania</span>
           <span aria-hidden="true">→</span>
           <span>2. Podsumowanie i płatność</span>
@@ -295,7 +295,7 @@ export default function Home() {
           <span>3. Potwierdzenie</span>
         </nav>
 
-        <div className="flex flex-col lg:flex-row gap-[10rem] items-start">
+        <div className="flex flex-col lg:flex-row gap-10 md:gap-[10rem] items-start">
           {/* ===== LEFT COLUMN — FORM ===== */}
           <div className="flex-1 min-w-0">
 
@@ -633,8 +633,8 @@ export default function Home() {
                         onChange={(e) => setDiscountCode(e.target.value)}
                         className="w-full border border-gray-300 px-4 py-3 text-xl font-medium focus:outline-none focus:border-2 focus:border-[#007AFC]"
                       />
-                      <p className="text-[11px] text-inpost-black mt-3 leading-snug font-medium">
-                        W ciągu ostatnich 30 dni najniższa cena za tę usługę wynosiła {price} zł
+                      <p className="text-[12px] text-inpost-black mt-3 leading-snug font-medium">
+                        Najniższa cena z 30 dni przed promocją obowiązująca na szybkienadania.pl: {price} zł
                       </p>
                     </div>
                   )}
@@ -706,7 +706,7 @@ export default function Home() {
               </div>
 
               {/* Business Hours Rows */}
-              <div className="flex flex-col gap-1 text-[12px] text-white">
+              <div className=" flex-col gap-1 text-[12px] text-white hidden md:flex">
                 <p>Poniedziałek-Piątek 7:00 - 22:00</p>
                 <p>Sobota 8:00 - 20:00</p>
                 <p>Niedziela 8:00 - 18:00</p>
