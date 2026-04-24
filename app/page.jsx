@@ -54,7 +54,7 @@ const initialFormData = {
     street: "",
     buildingNumber: "",
     unitNumber: "",
-    additionalInfo: "",
+    codValue: "",
   },
   sender: {
     name: "",
@@ -214,8 +214,8 @@ export default function Home() {
             <div className="flex items-center">
               <Image src="/Inpost.svg" alt="InPost Logo" width={150} height={50} className="h-10 w-auto" priority style={{ height: 'auto' }} />
             </div>
-            <div className="h-6 w-[1.5px] bg-[#4D4D4D] hidden sm:block" />
-            <span className="text-white font-bold text-lg  tracking-wide hidden sm:block">
+            <div className="h-4 w-[1px] bg-inpost-white sm:block" />
+            <span className="text-white font-bold text-sm md:text-lg  tracking-wide sm:block">
               Szybkie Nadania
             </span>
           </div>
@@ -232,17 +232,20 @@ export default function Home() {
 
       {/* ========== HERO BANNER ========== */}
       <section className="bg-inpost-yellow w-full pt-10 pb-4 relative overflow-hidden">
-        <div className="max-w-[1200px] mx-auto px-4 flex flex-col md:flex-row items-center justify-between relative z-10 gap-6">
-          <div className="flex items-start gap-6 mt-8">
+        <div className="max-w-[1200px] mx-auto px-4 flex flex-col md:flex-row md:items-center justify-between relative z-10 gap-6">
+          <div className="flex flex-col md:flex-row items-start gap-6 md:mt-8">
             <Image src="/percel-locker.svg" alt="Parcel Locker" width={106} height={83} className="shrink-0 h-auto w-auto" />
             <div className="max-w-xl">
-              <h1 className="text-inpost-black text-[48px] font-black leading-[0.9] tracking-tight uppercase mb-2">
-                Wysyłaj paczki szybko i wygodnie
-              </h1>
-              <p className="text-inpost-black text-lg font-semibold opacity-90 tracking-[0.02em] mt-3">
+              <Image src="/header_desktop.svg" alt="Parcel Locker" width={150} height={100} className="shrink-0 h-auto w-auto" />
+              <p className="text-inpost-black text-base md:text-lg font-semibold opacity-90 tracking-[0.02em] mt-3">
                 w Polsce i za granicę
                 &nbsp;·&nbsp; z etykietą lub bez
               </p>
+              <div className="md:hidden mt-5">
+            <button type="button" className="bg-inpost-black text-white px-6 py-4 font-bold text-[15px] hover:bg-black transition-colors">
+              Jak nadać paczkę?
+            </button>
+          </div>
             </div>
           </div>
 
@@ -250,10 +253,10 @@ export default function Home() {
       </section>
 
       {/* ========== TAB BAR ========== */}
-      <div className="bg-inpost-yellow w-full pt-5">
+      <div className="bg-inpost-yellow w-full md:pt-5">
         <div className="max-w-[1200px] mx-auto px-4 flex items-center justify-between">
           <div className="flex items-end gap-5">
-            <button type="button" className="px-10 py-5 text-[15px] font-black tracking-tight bg-white relative">
+            <button type="button" className="md:px-10 px-5 py-2 md:py-5 text-[15px] font-black tracking-tight bg-white relative">
               PRZESYŁKA KRAJOWA
             </button>
             <button type="button" className="bg-[#FAE6AA] px-10 py-5 text-[15px] font-black tracking-tight text-inpost-black flex items-center gap-2 cursor-pointer">
@@ -478,17 +481,19 @@ export default function Home() {
                     </>
                   )}
                   <div className="col-span-2">
-                    <label htmlFor="r-additional" className="block text-[15px] font-bold text-inpost-black mb-2  tracking-wide">Dodatkowe informacje dla kuriera <span className="font-bold text-inpost-black">(opcjonalnie)</span></label>
-                    <textarea
-                      id="r-additional"
-                      value={r.additionalInfo}
-                      onChange={(e) => { if (e.target.value.length <= 180) handleRecipientChange("additionalInfo", e.target.value); }}
-                      className="w-full border px-4 py-4 bg-white resize-none h-14 transition-all border-inpost-gray focus:border-2 focus:border-blue-600 outline-none"
-                      maxLength={180}
-                    />
-                    <div className="flex justify-between items-center gap-3 mt-2">
-                      <p className="text-[12px] font-medium text-inpost-gray">Możesz tu wpisać dodatkowe wskazówki dla kuriera, np. kod do domofonu.</p>
-                      <span className="text-[11px] font-bold text-inpost-gray">{r.additionalInfo.length}/180</span>
+                    <label htmlFor="r-cod" className="block text-[15px] font-bold text-inpost-black mb-2 tracking-wide">Wartość pobrania</label>
+                    <div className="flex border border-inpost-gray bg-white transition-all focus-within:border-2 focus-within:border-blue-600">
+                      <input
+                        type="text"
+                        id="r-cod"
+                        placeholder="Wpisz kwotę, aby nadać przesyłkę za pobran"
+                        value={r.codValue}
+                        onChange={(e) => handleRecipientChange("codValue", e.target.value)}
+                        className="flex-1 px-4 py-4 bg-transparent outline-none text-[15px] placeholder:font-normal placeholder:opacity-50"
+                      />
+                      <div className="w-14 flex items-center justify-center border-l border-inpost-gray text-inpost-black/60 font-light text-[18px]">
+                        ?
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -662,7 +667,7 @@ export default function Home() {
       </main>
 
       {/* ========== FOOTER ========== */}
-      <footer className="bg-inpost-black text-white pt-6 pb-6 mt-20">
+      <footer className="bg-inpost-black text-white pt-6 pb-6 mt-10">
         <div className="max-w-[1200px] mx-auto px-4">
           {/* Top Row: Brand and Links */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-10">
