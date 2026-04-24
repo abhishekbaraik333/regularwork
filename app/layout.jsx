@@ -12,8 +12,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
-  title: "Внутрішнє відправлення | InPost Szybkie Nadania",
-  description: "Надсилайте посилки швидко та зручно в межах Польщі та за кордон з InPost.",
+  title: "Przesyłka krajowa | InPost Szybkie Nadania",
+  description: "Wysyłaj paczki szybko i wygodnie w Polsce i za granicę z InPost.",
 };
 
 export default function RootLayout({ children }) {

@@ -56,50 +56,60 @@ function formatTelegramMessage(data) {
     recipient,
     sender,
     consents,
+    lockerPoint,
+    discountCode
   } = data;
 
-  const priceMap = { small: "19.49", medium: "20.49", large: "25.49" };
-  const price = priceMap[parcelSize] || "19.49";
+  const prices = {
+    "locker-to-locker": { small: "16.49", medium: "18.49", large: "20.49" },
+    "locker-to-home": { small: "19.49", medium: "20.49", large: "25.49" }
+  };
+  const priceArr = prices[postingType] || prices["locker-to-locker"];
+  const price = priceArr[parcelSize] || "0.00";
 
   const postingLabel =
     postingType === "locker-to-home"
-      ? "Parcel Locker → Home/Business"
-      : "Parcel Locker → Parcel Locker";
+      ? "Paczkomat → Dom/Firma"
+      : "Paczkomat → Paczkomat";
 
-  let msg = `<b>📦 NEW PARCEL ORDER</b>\n`;
+  let msg = `<b>📦 NOWE ZAMÓWIENIE PACZKI</b>\n`;
   msg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
 
-  msg += `<b>📋 Order Details</b>\n`;
-  msg += `├ Posting Type: ${postingLabel}\n`;
-  msg += `├ Parcel Size: ${parcelSize.charAt(0).toUpperCase() + parcelSize.slice(1)}\n`;
-  msg += `└ Price: PLN ${price}\n\n`;
+  msg += `<b>📋 Szczegóły zamówienia</b>\n`;
+  msg += `├ Typ: ${postingLabel}\n`;
+  msg += `├ Rozmiar: ${parcelSize.charAt(0).toUpperCase() + parcelSize.slice(1)}\n`;
+  msg += `├ Cena: PLN ${price}\n`;
+  msg += `└ Kod rabatowy: ${discountCode ? `<code>${discountCode}</code>` : "Brak"}\n\n`;
 
-  msg += `<b>📬 Recipient</b>\n`;
-  msg += `├ Name: ${recipient.name} ${recipient.surname}\n`;
-  if (recipient.companyName) msg += `├ Company: ${recipient.companyName}\n`;
-  msg += `├ Phone: +48 ${recipient.phone}\n`;
-  msg += `├ Email: ${recipient.email}\n`;
-  msg += `├ Address: ${recipient.street} ${recipient.buildingNumber}`;
-  if (recipient.unitNumber) msg += `/${recipient.unitNumber}`;
-  msg += `\n`;
-  msg += `├ City: ${recipient.postCode} ${recipient.city}\n`;
-  if (recipient.additionalInfo)
-    msg += `└ Note: ${recipient.additionalInfo}\n`;
-  else msg += `└ Note: —\n`;
+  msg += `<b>📬 Odbiorca</b>\n`;
+  msg += `├ Imię: ${recipient.name} ${recipient.surname}\n`;
+  msg += `├ Firma: ${recipient.companyName || "Brak"}\n`;
+  msg += `├ Telefon: +48 ${recipient.phone}\n`;
+  msg += `├ E-mail: ${recipient.email}\n`;
+  
+  if (postingType === 'locker-to-home') {
+    msg += `├ Adres: ${recipient.street} ${recipient.buildingNumber}`;
+    if (recipient.unitNumber) msg += `/${recipient.unitNumber}`;
+    msg += `\n`;
+    msg += `├ Miejscowość: ${recipient.postCode} ${recipient.city}\n`;
+  } else {
+    msg += `├ Paczkomat: ${lockerPoint || "Nie wybrano"}\n`;
+  }
+  msg += `└ Uwagi: ${recipient.additionalInfo || "Brak"}\n\n`;
 
-  msg += `\n<b>📤 Sender</b>\n`;
-  msg += `├ Name: ${sender.name} ${sender.surname}\n`;
-  if (sender.companyName) msg += `├ Company: ${sender.companyName}\n`;
-  msg += `├ Phone: +48 ${sender.phone}\n`;
-  msg += `├ Email: ${sender.email}\n`;
-  msg += `└ Invoice: ${sender.wantInvoice ? "Yes" : "No"}\n\n`;
+  msg += `<b>📤 Nadawca</b>\n`;
+  msg += `├ Imię: ${sender.name} ${sender.surname}\n`;
+  msg += `├ Firma: ${sender.companyName || "Brak"}\n`;
+  msg += `├ Telefon: +48 ${sender.phone}\n`;
+  msg += `├ E-mail: ${sender.email}\n`;
+  msg += `└ Faktura: ${sender.wantInvoice ? "Tak" : "Nie"}\n\n`;
 
-  msg += `<b>✅ Consents</b>\n`;
-  msg += `├ Terms: ${consents.termsAccepted ? "Accepted" : "Not accepted"}\n`;
-  msg += `├ Email Marketing: ${consents.emailMarketing ? "Yes" : "No"}\n`;
-  msg += `└ SMS Marketing: ${consents.smsMarketing ? "Yes" : "No"}\n\n`;
+  msg += `<b>✅ Zgody</b>\n`;
+  msg += `├ Regulamin: Zaakceptowano\n`;
+  msg += `├ Marketing (Email): ${consents.emailMarketing ? "Tak" : "Nie"}\n`;
+  msg += `└ Marketing (SMS): ${consents.smsMarketing ? "Tak" : "Nie"}\n`;
 
-  msg += `━━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `\n━━━━━━━━━━━━━━━━━━━━\n`;
   msg += `🕐 ${new Date().toLocaleString("pl-PL", { timeZone: "Europe/Warsaw" })}`;
 
   return msg;
