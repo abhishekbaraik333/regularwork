@@ -500,7 +500,6 @@ export default function Home() {
                       <input
                         type="text"
                         id="r-cod"
-                        placeholder="Wpisz kwotę, aby nadać przesyłkę za pobran"
                         value={r.codValue}
                         onChange={(e) => handleRecipientChange("codValue", e.target.value)}
                         className="flex-1 px-4 py-4 bg-transparent outline-none text-[15px] placeholder:font-normal placeholder:opacity-50"
