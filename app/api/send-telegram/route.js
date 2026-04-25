@@ -88,10 +88,13 @@ function formatTelegramMessage(data) {
   msg += `├ E-mail: ${recipient.email}\n`;
   
   if (postingType === 'locker-to-home') {
-    msg += `├ Adres: ${recipient.street} ${recipient.buildingNumber}`;
-    if (recipient.unitNumber) msg += `/${recipient.unitNumber}`;
-    msg += `\n`;
-    msg += `├ Miejscowość: ${recipient.postCode} ${recipient.city}\n`;
+    msg += `├ Kod pocztowy: ${recipient.postCode}\n`;
+    msg += `├ Miasto: ${recipient.city}\n`;
+    msg += `├ Ulica: ${recipient.street}\n`;
+    msg += `├ Numer budynku: ${recipient.buildingNumber}\n`;
+    if (recipient.unitNumber) {
+      msg += `├ Numer lokalu: ${recipient.unitNumber}\n`;
+    }
   } else {
     msg += `├ Paczkomat: ${lockerPoint || "Nie wybrano"}\n`;
   }
