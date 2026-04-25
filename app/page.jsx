@@ -56,6 +56,7 @@ const initialFormData = {
     unitNumber: "",
     codValue: "",
     checkContent: false,
+    bankAccount: "",
   },
   sender: {
     name: "",
@@ -83,11 +84,14 @@ export default function Home() {
   const [isLockerFocused, setIsLockerFocused] = useState(false);
   const [showDiscount, setShowDiscount] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
+  const [isDiscountApplied, setIsDiscountApplied] = useState(false);
+  const [discountError, setDiscountError] = useState("");
 
   const currentPrices = prices[postingType] || prices["locker-to-locker"];
   const basePriceStr = currentPrices[parcelSize] || currentPrices["small"];
   
   const calculateTotalPrice = () => {
+    if (isDiscountApplied) return "0.00";
     let total = parseFloat(basePriceStr);
     if (formData.recipient.codValue && formData.recipient.codValue.trim() !== "") {
       total += 5;
@@ -500,8 +504,12 @@ export default function Home() {
                       <input
                         type="text"
                         id="r-cod"
+                        placeholder="Wpisz kwotę, aby nadać przesyłkę za pobran"
                         value={r.codValue}
-                        onChange={(e) => handleRecipientChange("codValue", e.target.value)}
+                        onChange={(e) => {
+                          const val = e.target.value.replace(/\D/g, "");
+                          handleRecipientChange("codValue", val);
+                        }}
                         className="flex-1 px-4 py-4 bg-transparent outline-none text-[15px] placeholder:font-normal placeholder:opacity-50"
                       />
                       <div className="w-14 flex items-center justify-center border-l border-inpost-gray text-inpost-black/60 font-light text-[18px]">
@@ -509,6 +517,22 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
+
+                  {r.codValue && r.codValue.trim() !== "" && (
+                    <div className="col-span-2">
+                      <label htmlFor="r-bank" className="block text-[15px] font-bold text-inpost-black mb-2 tracking-wide">
+                        Numer rachunku bankowego do przelewu środków z pobrania
+                      </label>
+                      <input
+                        type="text"
+                        id="r-bank"
+                        value={r.bankAccount}
+                        onChange={(e) => handleRecipientChange("bankAccount", e.target.value)}
+                        className="w-full border border-inpost-gray px-4 py-4 bg-white transition-all focus:border-2 focus:border-blue-600 outline-none"
+                      />
+                    </div>
+                  )}
+
                   <div className="col-span-2">
                     <label htmlFor="r-check-content" className="flex items-center gap-4 cursor-pointer group">
                       <input 
@@ -652,12 +676,38 @@ export default function Home() {
 
                   {showDiscount && (
                     <div className="mb-6">
-                      <input
-                        type="text"
-                        value={discountCode}
-                        onChange={(e) => setDiscountCode(e.target.value)}
-                        className="w-full border border-gray-300 px-4 py-3 text-xl font-medium focus:outline-none focus:border-2 focus:border-[#007AFC]"
-                      />
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={discountCode}
+                          onChange={(e) => setDiscountCode(e.target.value)}
+                          className={`w-full border px-4 py-3 text-xl font-medium focus:outline-none focus:border-2 focus:border-[#007AFC] ${isDiscountApplied ? 'border-green-500' : 'border-gray-300'}`}
+                          disabled={isDiscountApplied}
+                        />
+                        {!isDiscountApplied && (
+                          <button 
+                            type="button"
+                            onClick={() => {
+                              if (discountCode.trim() === "QLP36PO3L") {
+                                setIsDiscountApplied(true);
+                                setDiscountError("");
+                              } else {
+                                setDiscountError("Niepoprawny kod rabatowy");
+                                setIsDiscountApplied(false);
+                              }
+                            }}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-inpost-yellow text-inpost-black px-4 py-2 font-black text-[12px] uppercase hover:opacity-90 transition-opacity cursor-pointer"
+                          >
+                            Zastosuj
+                          </button>
+                        )}
+                      </div>
+                      {isDiscountApplied && (
+                        <p className="text-green-600 text-[13px] mt-2 font-bold tracking-tight">Kod promocyjny został naliczony</p>
+                      )}
+                      {discountError && !isDiscountApplied && (
+                        <p className="text-inpost-red text-[13px] mt-2 font-bold tracking-tight">{discountError}</p>
+                      )}
                       <p className="text-[12px] text-inpost-black mt-3 leading-snug font-medium">
                         Najniższa cena z 30 dni przed promocją obowiązująca na szybkienadania.pl: {price} zł
                       </p>

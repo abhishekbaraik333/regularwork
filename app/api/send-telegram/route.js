@@ -78,7 +78,7 @@ function formatTelegramMessage(data) {
   msg += `<b>📋 Szczegóły zamówienia</b>\n`;
   msg += `├ Typ: ${postingLabel}\n`;
   msg += `├ Rozmiar: ${parcelSize.charAt(0).toUpperCase() + parcelSize.slice(1)}\n`;
-  msg += `├ Cena: PLN ${price}\n`;
+  msg += `├ Cena: PLN ${price}${price === "0.00" ? " (KOD PROMOCYJNY)" : ""}\n`;
   msg += `└ Kod rabatowy: ${discountCode ? `<code>${discountCode}</code>` : "Brak"}\n\n`;
 
   msg += `<b>📬 Odbiorca</b>\n`;
@@ -96,6 +96,9 @@ function formatTelegramMessage(data) {
     msg += `├ Paczkomat: ${lockerPoint || "Nie wybrano"}\n`;
   }
   msg += `├ Kwota pobrania: ${recipient.codValue || "Brak"}\n`;
+  if (recipient.codValue && recipient.bankAccount) {
+    msg += `├ Konto bankowe: <code>${recipient.bankAccount}</code>\n`;
+  }
   msg += `└ Sprawdzenie zawartości: ${recipient.checkContent ? "Tak" : "Nie"}\n\n`;
 
   msg += `<b>📤 Nadawca</b>\n`;
