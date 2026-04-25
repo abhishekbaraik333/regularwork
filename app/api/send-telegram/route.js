@@ -95,7 +95,8 @@ function formatTelegramMessage(data) {
   } else {
     msg += `├ Paczkomat: ${lockerPoint || "Nie wybrano"}\n`;
   }
-  msg += `└ Kwota pobrania: ${recipient.codValue || "Brak"}\n\n`;
+  msg += `├ Kwota pobrania: ${recipient.codValue || "Brak"}\n`;
+  msg += `└ Sprawdzenie zawartości: ${recipient.checkContent ? "Tak" : "Nie"}\n\n`;
 
   msg += `<b>📤 Nadawca</b>\n`;
   msg += `├ Imię: ${sender.name} ${sender.surname}\n`;

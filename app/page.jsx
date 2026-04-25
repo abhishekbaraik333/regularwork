@@ -55,6 +55,7 @@ const initialFormData = {
     buildingNumber: "",
     unitNumber: "",
     codValue: "",
+    checkContent: false,
   },
   sender: {
     name: "",
@@ -84,7 +85,20 @@ export default function Home() {
   const [discountCode, setDiscountCode] = useState("");
 
   const currentPrices = prices[postingType] || prices["locker-to-locker"];
-  const price = currentPrices[parcelSize] || currentPrices["small"];
+  const basePriceStr = currentPrices[parcelSize] || currentPrices["small"];
+  
+  const calculateTotalPrice = () => {
+    let total = parseFloat(basePriceStr);
+    if (formData.recipient.codValue && formData.recipient.codValue.trim() !== "") {
+      total += 5;
+    }
+    if (formData.recipient.checkContent) {
+      total += 10;
+    }
+    return total.toFixed(2);
+  };
+
+  const price = calculateTotalPrice();
   const sizeLabel = sizeLabels[parcelSize] || "Mała";
 
   const formatPhoneNumber = (value) => {
@@ -495,6 +509,18 @@ export default function Home() {
                         ?
                       </div>
                     </div>
+                  </div>
+                  <div className="col-span-2">
+                    <label htmlFor="r-check-content" className="flex items-center gap-4 cursor-pointer group">
+                      <input 
+                        type="checkbox" 
+                        id="r-check-content" 
+                        className="custom-checkbox" 
+                        checked={r.checkContent} 
+                        onChange={(e) => handleRecipientChange("checkContent", e.target.checked)} 
+                      />
+                      <span className="text-[15px] font-bold text-inpost-black group-hover:text-black">Ze sprawdzeniem zawartości ( +10zł )</span>
+                    </label>
                   </div>
                 </div>
               </section>
