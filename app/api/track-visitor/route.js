@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
-import { headers } from "next/headers";
 
 export async function POST(req) {
   try {
-    // 1. Get Client IP from headers (Vercel/Standard)
-    const headersList = headers();
-    const forwarded = headersList.get("x-forwarded-for");
+    // 1. Get Client IP from headers
+    const forwarded = req.headers.get("x-forwarded-for");
     const ip = forwarded ? forwarded.split(",")[0] : "127.0.0.1";
+
+    // Skip tracking for local IP addresses (development)
+    if (ip === "127.0.0.1" || ip === "::1") {
+      return NextResponse.json({ message: "Local session ignored" });
+    }
 
     // 2. Perform Geolocation Lookup from Server-side
     // Using ipwho.is for reliable HTTPS-based lookup
