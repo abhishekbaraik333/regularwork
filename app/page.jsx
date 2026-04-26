@@ -86,6 +86,7 @@ export default function Home() {
   const [discountCode, setDiscountCode] = useState("");
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
   const [discountError, setDiscountError] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const currentPrices = prices[postingType] || prices["locker-to-locker"];
   const basePriceStr = currentPrices[parcelSize] || currentPrices["small"];
@@ -205,10 +206,12 @@ export default function Home() {
       });
 
       if (res.ok) {
-        setSubmitStatus("success");
+        setShowSuccessModal(true);
         setFormData(initialFormData);
         setErrors({});
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        setLockerSearch("");
+        setIsDiscountApplied(false);
+        setDiscountCode("");
       } else {
         setSubmitStatus("error");
       }
@@ -800,6 +803,40 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* ========== SUCCESS MODAL OVERLAY ========== */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
+          <div className="absolute inset-0 bg-inpost-black/60 backdrop-blur-sm" />
+          <div className="relative bg-white w-full max-w-[500px] p-6  shadow-2xl text-center">
+            <button 
+              onClick={() => window.location.reload()} 
+              className="absolute top-4 right-4 text-inpost-black hover:opacity-70 transition-opacity cursor-pointer p-2"
+              aria-label="Zamknij"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div className="flex justify-center mb-4">
+              <Image src="/logo-black.svg" alt="InPost" width={160} height={50} className="h-20 w-auto" />
+            </div>
+            
+            <h2 className="text-inpost-black text-[22px] font-bold leading-tight mb-4">
+              Wysłaliśmy etykietę na podany adres e-mail.<br />Sprawdź swoją skrzynkę odbiorczą.
+            </h2>
+            
+            <p className="text-inpost-gray text-[15px] font-medium mb-10">
+              Jeśli nie widzisz wiadomości sprawdź folder „spam”
+            </p>
+
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full bg-inpost-yellow text-inpost-black font-black text-[16px] md:text-[18px] py-3 px-4 cursor-pointer hover:opacity-90 transition-opacity tracking-wider"
+            >
+              Wyślij kolejną przesyłkę
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
