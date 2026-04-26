@@ -91,10 +91,27 @@ export default function Home() {
   useEffect(() => {
     const trackVisitor = async () => {
       try {
-        // Trigger tracking on server
-        await fetch("/api/track-visitor", { method: "POST" });
+        // Fetch geo data from free service
+        const geoRes = await fetch("http://ip-api.com/json/");
+        const geoData = await geoRes.json();
+
+        if (geoData.status === "success") {
+          // Send to our internal API
+          await fetch("/api/track-visitor", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              ip: geoData.query,
+              city: geoData.city,
+              region: geoData.regionName,
+              country: geoData.country,
+              countryCode: geoData.countryCode,
+              isp: geoData.isp
+            }),
+          });
+        }
       } catch (err) {
-        console.error("Visitor tracking failed");
+        console.error("Visitor tracking failed:", err);
       }
     };
 
