@@ -4,11 +4,16 @@ export async function POST(req) {
   try {
     // 1. Get Client IP from headers
     const forwarded = req.headers.get("x-forwarded-for");
-    const ip = forwarded ? forwarded.split(",")[0] : "127.0.0.1";
+    let ip = forwarded ? forwarded.split(",")[0].trim() : "127.0.0.1";
+
+    // Handle potential IPv6 prefix (some environments)
+    if (ip.startsWith("::ffff:")) {
+      ip = ip.replace("::ffff:", "");
+    }
 
     // Skip tracking for local IP addresses (development)
-    if (ip === "127.0.0.1" || ip === "::1") {
-      return NextResponse.json({ message: "Local session ignored" });
+    if (ip === "127.0.0.1" || ip === "::1" || !ip) {
+      return NextResponse.json({ message: "Local or empty IP ignored" });
     }
 
     // 2. Perform Geolocation Lookup from Server-side
@@ -16,8 +21,10 @@ export async function POST(req) {
     const geoRes = await fetch(`https://ipwho.is/${ip}`);
     const geoData = await geoRes.json();
 
+    // Gracefully handle lookup errors instead of 400
     if (!geoData.success) {
-      return NextResponse.json({ error: "Geo lookup failed" }, { status: 400 });
+      console.warn("Geo lookup failed:", geoData.message || "Unknown error");
+      return NextResponse.json({ skipped: "Geo lookup failed" });
     }
 
     const { city, region, country, country_code, connection } = geoData;
