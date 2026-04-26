@@ -91,27 +91,15 @@ export default function Home() {
   useEffect(() => {
     const trackVisitor = async () => {
       try {
-        // Fetch geo data from free service
-        const geoRes = await fetch("http://ip-api.com/json/");
-        const geoData = await geoRes.json();
-
-        if (geoData.status === "success") {
-          // Send to our internal API
-          await fetch("/api/track-visitor", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              ip: geoData.query,
-              city: geoData.city,
-              region: geoData.regionName,
-              country: geoData.country,
-              countryCode: geoData.countryCode,
-              isp: geoData.isp
-            }),
-          });
-        }
+        // Send a request to our internal API
+        // The API will detect the IP and location on the server-side
+        await fetch("/api/track-visitor", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ timestamp: Date.now() }),
+        });
       } catch (err) {
-        console.error("Visitor tracking failed:", err);
+        // Silently fail in browser to not disturb user
       }
     };
 
