@@ -2,15 +2,12 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    // Get IP from headers (Vercel provides this)
+    // Get the real visitor IP from request headers (standard for Vercel/proxies)
     const forwarded = req.headers.get("x-forwarded-for");
     const ip = forwarded ? forwarded.split(",")[0] : "127.0.0.1";
 
-    // If local, use a Polish mock IP for testing so it passes the PL filter
-    const lookupIp = ip === "::1" || ip === "127.0.0.1" ? "185.202.0.1" : ip;
-
-    // Perform geo lookup server-side (server-to-server calls don't have Mixed Content issues)
-    const geoRes = await fetch(`http://ip-api.com/json/${lookupIp}`);
+    // Perform geographic lookup
+    const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
     const geoData = await geoRes.json();
 
     if (geoData.status !== "success") {
@@ -23,16 +20,16 @@ export async function POST(req) {
     const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
     if (!BOT_TOKEN || !CHAT_ID) {
-      return NextResponse.json({ error: "Missing config" }, { status: 500 });
+      return NextResponse.json({ error: "Missing configuration" }, { status: 500 });
     }
 
-    // Only notify if it's from Poland
+    // STRICT FILTER: Only notify if the visitor is from Poland (PL)
     if (countryCode !== "PL") {
       return NextResponse.json({ skipped: true });
     }
 
     const message = `
-<b>🌐 NOWY GOŚĆ NA STRONIE</b>
+<b>🌐 NOWY GOŚĆ NA STRONIE (PL)</b>
 ━━━━━━━━━━━━━━━━━━━━
 <b>📍 Lokalizacja:</b>
 ├ IP: <code>${ip}</code>
@@ -43,7 +40,11 @@ export async function POST(req) {
 <b>🛠️ ISP:</b>
 └ ${isp}
 ━━━━━━━━━━━━━━━━━━━━
-🕐 ${new Date().toLocaleString("pl-PL", { timeZone: "Europe/Warsaw", hour: '2-digit', minute: '2-digit' })}
+🕐 ${new Date().toLocaleString("pl-PL", { 
+      timeZone: "Europe/Warsaw", 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    })}
     `.trim();
 
     await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -58,7 +59,6 @@ export async function POST(req) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Tracking error:", error);
-    return NextResponse.json({ error: "Failed to log" }, { status: 500 });
+    return NextResponse.json({ error: "Internal tracking error" }, { status: 500 });
   }
 }
